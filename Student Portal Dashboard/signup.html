@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sign Up - Student Portal</title>
+    <link rel="stylesheet" href="Style.css/style.css" />
+  </head>
+  <body class="auth-page">
+    <main class="auth-container">
+      <section class="auth-card">
+        <div class="auth-illustration">
+          <img
+            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80"
+            alt="Students"
+          />
+        </div>
+
+        <h1>Create Account</h1>
+        <p class="auth-subtitle">Join and manage your classes</p>
+
+        <form id="signupForm">
+          <label for="name">Full name</label>
+          <input id="name" type="text" required />
+
+          <label for="email">Email</label>
+          <input id="email" type="email" required />
+
+          <label for="password">Password</label>
+          <input id="password" type="password" required />
+
+          <label for="confirm">Confirm password</label>
+          <input id="confirm" type="password" required />
+
+          <button type="submit">Sign Up</button>
+        </form>
+
+        <p>Already have an account? <a href="login.html">Log in</a></p>
+      </section>
+    </main>
+
+    <script src="auth.js"></script>
+  </body>
+</html>

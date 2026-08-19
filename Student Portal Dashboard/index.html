@@ -1,0 +1,572 @@
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Portal Dashboard</title>
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="Style.css/style.css" />
+
+    <script>
+      // Redirect to login if not authenticated (runs before rendering)
+      try{
+        const auth = localStorage.getItem('student-authenticated');
+        if(!auth || auth !== 'true'){
+          window.location.replace('login.html');
+        }
+      }catch(e){
+        // if storage is blocked, still allow page to load
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Mobile Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="logo-section">
+        <div class="logo">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <div class="logo-text">
+          <h2>EduPortal</h2>
+          <span>Student Dashboard</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active">
+          <i class="fas fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="#" class="nav-item">
+          <i class="fas fa-calendar-days"></i>
+          <span>Schedule</span>
+        </a>
+
+        <a href="#" class="nav-item">
+          <i class="fas fa-list-check"></i>
+          <span>Tasks</span>
+        </a>
+
+        <a href="#" class="nav-item">
+          <i class="fas fa-bullhorn"></i>
+          <span>Announcements</span>
+        </a>
+
+        <a href="#" class="nav-item">
+          <i class="fas fa-chart-line"></i>
+          <span>Grades</span>
+        </a>
+
+        <a href="#" class="nav-item">
+          <i class="fas fa-gear"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="collapseBtn">
+          <i class="fas fa-angle-left"></i>
+          <span>Collapse</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="topbar">
+        <div class="top-left">
+          <button class="mobile-menu" id="mobileMenu">
+            <i class="fas fa-bars"></i>
+          </button>
+
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search classes, tasks, announcements..."
+            />
+          </div>
+        </div>
+
+        <div class="top-right">
+          <div class="datetime-card">
+            <div id="currentDate"></div>
+            <div id="currentTime"></div>
+          </div>
+
+          <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+          </button>
+
+          <!-- Notifications -->
+          <div class="notification-wrapper">
+            <button class="notification-btn" id="notificationBtn">
+              <i class="fas fa-bell"></i>
+              <span class="notification-count">4</span>
+            </button>
+
+            <div class="notification-dropdown" id="notificationDropdown">
+              <div class="dropdown-header">
+                <h4>Notifications</h4>
+              </div>
+
+              <div class="notification-item">
+                <i class="fas fa-book"></i>
+                <div>
+                  <p>Assignment Due Tomorrow</p>
+                  <small>Programming Fundamentals</small>
+                </div>
+              </div>
+
+              <div class="notification-item">
+                <i class="fas fa-calendar"></i>
+                <div>
+                  <p>Class Schedule Updated</p>
+                  <small>Database Systems</small>
+                </div>
+              </div>
+
+              <div class="notification-item">
+                <i class="fas fa-bullhorn"></i>
+                <div>
+                  <p>University Announcement</p>
+                  <small>Enrollment Schedule Released</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Student -->
+          <div class="profile-mini">
+            <img src="https://i.pravatar.cc/150?img=12" alt="Student" />
+            <div>
+              <h4 id="userName">Dave Andrew Isorena</h4>
+              <span>BSIT 4D</span>
+            </div>
+          </div>
+
+          <button id="logoutBtn" class="logout-btn" onclick="logoutUser()">Logout</button>
+        </div>
+      </header>
+
+      <!-- Welcome -->
+      <section class="welcome-section">
+        <div>
+          <h1>Welcome Back, Dave 👋</h1>
+          <p>
+            Manage your classes, assignments, schedules, and announcements in
+            one place.
+          </p>
+        </div>
+
+        <div class="semester-badge">AY 2026 - 2027</div>
+      </section>
+
+      <!-- Statistics -->
+      <section class="stats-grid">
+        <article class="stat-card">
+          <div class="stat-icon blue">
+            <i class="fas fa-chalkboard"></i>
+          </div>
+
+          <div>
+            <h3 class="counter" data-target="8">0</h3>
+            <p>Upcoming Classes</p>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon orange">
+            <i class="fas fa-list-check"></i>
+          </div>
+
+          <div>
+            <h3 class="counter" data-target="14">0</h3>
+            <p>Pending Tasks</p>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon green">
+            <i class="fas fa-circle-check"></i>
+          </div>
+
+          <div>
+            <h3 class="counter" data-target="42">0</h3>
+            <p>Completed Tasks</p>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon purple">
+            <i class="fas fa-bullhorn"></i>
+          </div>
+
+          <div>
+            <h3 class="counter" data-target="9">0</h3>
+            <p>Announcements</p>
+          </div>
+        </article>
+      </section>
+
+      <!-- Dashboard Grid -->
+      <section class="dashboard-grid">
+        <!-- LEFT COLUMN -->
+        <div class="left-column">
+          <!-- Student Card -->
+          <section class="card profile-card">
+            <div class="profile-banner"></div>
+
+            <div class="profile-content">
+              <img
+                class="profile-avatar"
+                src="https://i.pravatar.cc/300?img=12"
+                alt=""
+              />
+
+              <h2>Dave Andrew Isorena</h2>
+
+              <p>Student ID: 2022-60231</p>
+
+              <span class="course-tag">
+                Bachelor of Science in Information Technology
+              </span>
+
+              <div class="profile-stats">
+                <div>
+                  <h3>3.75</h3>
+                  <span>GPA</span>
+                </div>
+
+                <div>
+                  <h3>24</h3>
+                  <span>Units</span>
+                </div>
+
+                <div>
+                  <h3>95%</h3>
+                  <span>Attendance</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Weekly Schedule -->
+          <section class="card">
+            <div class="card-header">
+              <h2>Weekly Schedule</h2>
+
+              <select id="scheduleFilter">
+                <option value="all">All Days</option>
+                <option value="monday">Monday</option>
+                <option value="tuesday">Tuesday</option>
+                <option value="wednesday">Wednesday</option>
+                <option value="thursday">Thursday</option>
+                <option value="friday">Friday</option>
+              </select>
+            </div>
+
+            <div class="schedule-list">
+              <div class="schedule-card" data-day="monday">
+                <div class="schedule-time">8:00 AM</div>
+
+                <div>
+                  <h4>Web Development</h4>
+                  <p>Room ICT-301</p>
+                </div>
+              </div>
+
+              <div class="schedule-card" data-day="tuesday">
+                <div class="schedule-time">10:00 AM</div>
+
+                <div>
+                  <h4>Database Systems</h4>
+                  <p>Room ICT-204</p>
+                </div>
+              </div>
+
+              <div class="schedule-card" data-day="wednesday">
+                <div class="schedule-time">1:00 PM</div>
+
+                <div>
+                  <h4>System Analysis</h4>
+                  <p>Room ICT-105</p>
+                </div>
+              </div>
+
+              <div class="schedule-card" data-day="thursday">
+                <div class="schedule-time">3:00 PM</div>
+
+                <div>
+                  <h4>Networking</h4>
+                  <p>Laboratory 2</p>
+                </div>
+              </div>
+
+              <div class="schedule-card" data-day="friday">
+                <div class="schedule-time">9:00 AM</div>
+
+                <div>
+                  <h4>Capstone Project</h4>
+                  <p>Research Room</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Tasks -->
+          <section class="card">
+            <div class="card-header">
+              <h2>Task Management</h2>
+              <button class="add-task">+ New Task</button>
+            </div>
+
+            <div class="tasks-container">
+              <div class="task-item">
+                <div class="task-top">
+                  <div>
+                    <h4>Build Student Portal UI</h4>
+                    <small> Due: August 22, 2026 </small>
+                  </div>
+
+                  <span class="priority high"> High </span>
+                </div>
+
+                <div class="progress">
+                  <div class="progress-fill" data-progress="75"></div>
+                </div>
+
+                <div class="progress-label">75% Completed</div>
+              </div>
+
+              <div class="task-item">
+                <div class="task-top">
+                  <div>
+                    <h4>Database ER Diagram</h4>
+                    <small> Due: August 24, 2026 </small>
+                  </div>
+
+                  <span class="priority medium"> Medium </span>
+                </div>
+
+                <div class="progress">
+                  <div class="progress-fill" data-progress="50"></div>
+                </div>
+
+                <div class="progress-label">50% Completed</div>
+              </div>
+
+              <!-- Task 3 -->
+              <div class="task-item">
+                <div class="task-top">
+                  <div>
+                    <h4>Networking Lab Report</h4>
+                    <small> Due: August 26, 2026 </small>
+                  </div>
+
+                  <span class="priority low"> Low </span>
+                </div>
+
+                <div class="progress">
+                  <div class="progress-fill" data-progress="20"></div>
+                </div>
+
+                <div class="progress-label">20% Completed</div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="right-column">
+          <!-- Academic Performance -->
+          <section class="card">
+            <div class="card-header">
+              <h2>Academic Progress</h2>
+            </div>
+
+            <div class="progress-ring-wrapper">
+              <div class="progress-ring">
+                <svg width="180" height="180">
+                  <circle class="bg-circle" cx="90" cy="90" r="70" />
+
+                  <circle class="progress-circle" cx="90" cy="90" r="70" />
+                </svg>
+
+                <div class="ring-text">
+                  <h2>88%</h2>
+                  <span>Overall Grade</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Calendar -->
+          <section class="card">
+            <div class="card-header">
+              <h2>Academic Calendar</h2>
+            </div>
+
+            <div class="calendar-widget">
+              <div class="calendar-header">
+                <button id="prevMonth">
+                  <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <h3 id="monthYear">August 2026</h3>
+
+                <button id="nextMonth">
+                  <i class="fas fa-chevron-right"></i>
+                </button>
+              </div>
+
+              <div class="calendar-days">
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+              </div>
+
+              <div class="calendar-dates" id="calendarDates"></div>
+            </div>
+          </section>
+
+          <!-- Announcements -->
+          <section class="card">
+            <div class="card-header">
+              <h2>Latest Announcements</h2>
+            </div>
+
+            <div class="announcement-list">
+              <article class="announcement">
+                <div class="announcement-icon">
+                  <i class="fas fa-bullhorn"></i>
+                </div>
+
+                <div>
+                  <h4>Enrollment Schedule Released</h4>
+
+                  <p>
+                    The university has officially released the enrollment
+                    schedule for the upcoming semester.
+                  </p>
+
+                  <small> August 17, 2026 </small>
+                </div>
+              </article>
+
+              <article class="announcement">
+                <div class="announcement-icon">
+                  <i class="fas fa-calendar-days"></i>
+                </div>
+
+                <div>
+                  <h4>Midterm Examination Week</h4>
+
+                  <p>
+                    Midterm examinations will begin on September 10. Check your
+                    departmental schedules.
+                  </p>
+
+                  <small> August 14, 2026 </small>
+                </div>
+              </article>
+
+              <article class="announcement">
+                <div class="announcement-icon">
+                  <i class="fas fa-award"></i>
+                </div>
+
+                <div>
+                  <h4>Scholarship Applications Open</h4>
+
+                  <p>
+                    Students may now submit scholarship requirements online.
+                  </p>
+
+                  <small> August 12, 2026 </small>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <!-- Quick Links -->
+          <section class="card">
+            <div class="card-header">
+              <h2>Quick Access</h2>
+            </div>
+
+            <div class="quick-links">
+              <a href="#" class="quick-card">
+                <i class="fas fa-book"></i>
+                <span>Library</span>
+              </a>
+
+              <a href="#" class="quick-card">
+                <i class="fas fa-file-lines"></i>
+                <span>Resources</span>
+              </a>
+
+              <a href="#" class="quick-card">
+                <i class="fas fa-money-bill"></i>
+                <span>Payments</span>
+              </a>
+
+              <a href="#" class="quick-card">
+                <i class="fas fa-envelope"></i>
+                <span>Messages</span>
+              </a>
+
+              <a href="#" class="quick-card">
+                <i class="fas fa-user-group"></i>
+                <span>Organizations</span>
+              </a>
+
+              <a href="#" class="quick-card">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Courses</span>
+              </a>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="auth.js"></script>
+
+    <script>
+      // populate user name in header
+      try{
+        const email = localStorage.getItem('student-user-email');
+        const users = JSON.parse(localStorage.getItem('student-users') || '{}');
+        const name = email && users[email] && users[email].name ? users[email].name : null;
+        const el = document.getElementById('userName');
+        if(el && name) el.textContent = name;
+      }catch(e){/* ignore */}
+    </script>
+
+    <script src="script.js"></script>
+  </body>
+</html>
